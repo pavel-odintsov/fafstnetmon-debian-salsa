@@ -1,0 +1,23 @@
+From 70da8c54c6c708eeb9134e81f1002b6714709885 Mon Sep 17 00:00:00 2001
+From: Benjamin Drung <benjamin.drung@profitbricks.com>
+Date: Mon, 8 May 2017 17:14:33 +0200
+Subject: [PATCH 2/2] Fix typo criticial -> critical
+
+Fix typo and use full sentences.
+Forwarded: yes, https://github.com/pavel-odintsov/fastnetmon/pull/659
+
+---
+ src/fastnetmon.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/src/fastnetmon.cpp
++++ b/src/fastnetmon.cpp
+@@ -3715,7 +3715,7 @@
+     }
+ 
+     if (attack_type == AMPLIFICATION_ATTACK_UNKNOWN) {
+-        logger << log4cpp::Priority::ERROR << "We can't detect attack type with DPI it's not so criticial, only for your information";
++        logger << log4cpp::Priority::ERROR << "We can't detect attack type with DPI. It's not so critical, only for your information";
+     } else {
+         logger << log4cpp::Priority::INFO << "We detected this attack as: " << get_amplification_attack_type(attack_type);
+     

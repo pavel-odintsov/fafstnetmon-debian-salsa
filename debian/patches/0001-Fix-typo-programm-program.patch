@@ -1,0 +1,275 @@
+From 6b09a7b1906f605475f644c3fbdbc28c3e4fabed Mon Sep 17 00:00:00 2001
+From: Benjamin Drung <benjamin.drung@profitbricks.com>
+Date: Mon, 8 May 2017 16:21:52 +0200
+Subject: [PATCH 1/2] Fix typo programm -> program
+Forwarded: yes, https://github.com/pavel-odintsov/fastnetmon/pull/659
+
+---
+ docs/MANUAL_INSTALL.md                               |  6 +++---
+ src/afpacket_plugin/afpacket_collector.cpp           |  4 ++--
+ src/example_plugin/example_collector.cpp             |  2 +-
+ src/fastnetmon.cpp                                   | 20 ++++++++++----------
+ src/fastnetmon_actions.h                             |  2 +-
+ src/netflow_plugin/netflow_collector.cpp             |  2 +-
+ src/netmap_plugin/netmap_collector.cpp               |  4 ++--
+ src/pfring_plugin/pfring_collector.cpp               |  6 +++---
+ src/sflow_plugin/sflow_collector.cpp                 |  2 +-
+ src/snabbswitch_plugin/snabbswitch_collector.cpp     |  4 ++--
+ ...ch_for_libcuckoo_as_flow_tracking_structure.patch |  2 +-
+ src/tests/pfring_parser_zc_issue.c                   |  2 +-
+ 12 files changed, 28 insertions(+), 28 deletions(-)
+
+--- a/docs/MANUAL_INSTALL.md
++++ b/docs/MANUAL_INSTALL.md
+@@ -68,7 +68,7 @@
+ ldconfig -v
+ ```
+ 
+-It's REQUIRED to add all your networks in CIDR form to file /etc/networks_list if form when one subnet on one line. Please aggregate your networks because long networks list will significatly slow down programm. And please change REDIS_SUPPORT = yes to no in Makefile if you do not need traffic counting feature. When you running this software in OpenVZ node you may did not specify networks explicitly, we can read it from file /proc/vz/veip.
++It's REQUIRED to add all your networks in CIDR form to file /etc/networks_list if form when one subnet on one line. Please aggregate your networks because long networks list will significatly slow down program. And please change REDIS_SUPPORT = yes to no in Makefile if you do not need traffic counting feature. When you running this software in OpenVZ node you may did not specify networks explicitly, we can read it from file /proc/vz/veip.
+ 
+ You can add whitelist subnets in similar form to /etc/networks_whitelist (CIDR masks too).
+ 
+@@ -82,12 +82,12 @@
+ ./fastnetmon eth1,eth2
+ ```
+ 
+-Enable programm start on server startup, please add to /etc/rc.local this lines:
++Enable program start on server startup, please add to /etc/rc.local this lines:
+ ```bash
+ screen -S fastnetmon -d -m /root/fastnetmon/fastnetmon
+ ```
+ 
+-When incoming or outgoing attack arrives programm call bash script (when it exists): /usr/local/bin/notify_about_attack.sh two times. First time when threshold exceed (at this step we know IP, direction and power of attack). Second when we collect 100 packets for detailed audit what did happens.
++When incoming or outgoing attack arrives program call bash script (when it exists): /usr/local/bin/notify_about_attack.sh two times. First time when threshold exceed (at this step we know IP, direction and power of attack). Second when we collect 100 packets for detailed audit what did happens.
+ 
+ 
+ ==Command Line Reference 
+--- a/src/afpacket_plugin/afpacket_collector.cpp
++++ b/src/afpacket_plugin/afpacket_collector.cpp
+@@ -43,10 +43,10 @@
+ #include <linux/if_packet.h>
+ #include <net/ethernet.h> /* the L2 protocols */
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+-// Pass unparsed packets number to main programm
++// Pass unparsed packets number to main program
+ extern uint64_t total_unparsed_packets;
+ 
+ // Global configuration map
+--- a/src/example_plugin/example_collector.cpp
++++ b/src/example_plugin/example_collector.cpp
+@@ -22,7 +22,7 @@
+ 
+ #include "example_collector.h"
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+ // Global configuration map
+--- a/src/fastnetmon.cpp
++++ b/src/fastnetmon.cpp
+@@ -316,7 +316,7 @@
+ // Key used for sorting clients in output.  Allowed sort params: packets/bytes/flows
+ std::string sort_parameter = "packets";
+ 
+-// Number of lines in programm output
++// Number of lines in program output
+ unsigned int max_ips_in_list = 7;
+ 
+ // Number of lines for sending ben attack details to email
+@@ -460,7 +460,7 @@
+ void recalculate_speed();
+ std::string print_channel_speed(std::string traffic_type, direction packet_direction);
+ void process_packet(simple_packet& current_packet);
+-void traffic_draw_programm();
++void traffic_draw_program();
+ void interruption_signal_handler(int signal_number);
+ 
+ #ifdef FASTNETMON_API
+@@ -627,7 +627,7 @@
+ bool exec_with_stdin_params(std::string cmd, std::string params) {
+     FILE* pipe = popen(cmd.c_str(), "w");
+     if (!pipe) {
+-        logger << log4cpp::Priority::ERROR << "Can't execute programm " << cmd
++        logger << log4cpp::Priority::ERROR << "Can't execute program " << cmd
+                << " error code: " << errno << " error text: " << strerror(errno);
+         return false;
+     }
+@@ -638,7 +638,7 @@
+         pclose(pipe);
+         return true;
+     } else {
+-        logger << log4cpp::Priority::ERROR << "Can't pass data to stdin of programm " << cmd;
++        logger << log4cpp::Priority::ERROR << "Can't pass data to stdin of program " << cmd;
+         pclose(pipe);
+         return false;
+     }
+@@ -2044,7 +2044,7 @@
+         // Available only from boost 1.54: boost::this_thread::sleep_for(
+         // boost::chrono::seconds(check_period) );
+         boost::this_thread::sleep(boost::posix_time::seconds(check_period));
+-        traffic_draw_programm();
++        traffic_draw_program();
+     }
+ }
+ 
+@@ -2100,7 +2100,7 @@
+     double time_difference = difftime(start_time, last_call_of_traffic_recalculation);
+ 
+     if (time_difference < 1) {
+-        // It could occur on programm start
++        // It could occur on program start
+         logger << log4cpp::Priority::INFO
+                << "We skip one iteration of speed_calc because it runs so early!";
+         return;
+@@ -2306,11 +2306,11 @@
+         screen_data_file << screen_data_stats_param;
+         screen_data_file.close();
+     } else {
+-        logger << log4cpp::Priority::ERROR << "Can't print programm screen into file";
++        logger << log4cpp::Priority::ERROR << "Can't print program screen into file";
+     }
+ }
+ 
+-void traffic_draw_programm() {
++void traffic_draw_program() {
+     std::stringstream output_buffer;
+ 
+     // logger<<log4cpp::Priority::INFO<<"Draw table call";
+@@ -2538,7 +2538,7 @@
+         break;
+     default:
+         // We should close master process with _exit(0)
+-        // We should not call exit() because it will destroy all global variables for programm
++        // We should not call exit() because it will destroy all global variables for program
+         _exit(0);
+     }
+ 
+@@ -2850,7 +2850,7 @@
+     Destroy_Patricia(whitelist_tree_ipv6, (void_fn_t)0);
+ }
+ 
+-// For correct programm shutdown by CTRL+C
++// For correct program shutdown by CTRL+C
+ void interruption_signal_handler(int signal_number) {
+      
+     logger << log4cpp::Priority::INFO << "SIGNAL captured, prepare toolkit shutdown";
+--- a/src/fastnetmon_actions.h
++++ b/src/fastnetmon_actions.h
+@@ -9,7 +9,7 @@
+ 
+ #include "fast_library.h"
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+ // Global configuration map
+--- a/src/netflow_plugin/netflow_collector.cpp
++++ b/src/netflow_plugin/netflow_collector.cpp
+@@ -38,7 +38,7 @@
+ std::string lua_hooks_path = "/usr/src/fastnetmon/src/netflow_hooks.lua";
+ #endif
+ 
+-// Get it from main programm
++// Get it from main program
+ extern log4cpp::Category& logger;
+ 
+ // Global configuration map
+--- a/src/netmap_plugin/netmap_collector.cpp
++++ b/src/netmap_plugin/netmap_collector.cpp
+@@ -62,10 +62,10 @@
+ void netmap_thread(struct nm_desc* netmap_descriptor, int netmap_thread);
+ void consume_pkt(u_char* buffer, int len, int thread_number);
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+-// Pass unparsed packets number to main programm
++// Pass unparsed packets number to main program
+ extern uint64_t total_unparsed_packets;
+ 
+ // Global configuration map
+--- a/src/pfring_plugin/pfring_collector.cpp
++++ b/src/pfring_plugin/pfring_collector.cpp
+@@ -37,7 +37,7 @@
+ 
+ uint32_t pfring_sampling_ratio = 1; 
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+ extern uint64_t total_unparsed_packets;
+@@ -286,7 +286,7 @@
+ 
+     if (!pf_ring_init_result) {
+         // Internal error in PF_RING
+-        logger << log4cpp::Priority::ERROR << "PF_RING initilization failed, exit from programm";
++        logger << log4cpp::Priority::ERROR << "PF_RING initilization failed, exit from program";
+         exit(1);
+     }
+ }
+@@ -739,7 +739,7 @@
+ 
+     if (pfring_set_application_name_result != 0) {
+         logger << log4cpp::Priority::ERROR
+-               << "Can't set programm name for PF_RING: pfring_set_application_name";
++               << "Can't set program name for PF_RING: pfring_set_application_name";
+     }
+ 
+     pfring_version(pf_ring_descr, &version);
+--- a/src/sflow_plugin/sflow_collector.cpp
++++ b/src/sflow_plugin/sflow_collector.cpp
+@@ -46,7 +46,7 @@
+ std::string plugin_name = "sflow";
+ std::string plugin_log_prefix = plugin_name + ": ";
+ 
+-// Get logger from main programm
++// Get logger from main program
+ extern log4cpp::Category& logger;
+ 
+ // Global configuration map
+--- a/src/snabbswitch_plugin/snabbswitch_collector.cpp
++++ b/src/snabbswitch_plugin/snabbswitch_collector.cpp
+@@ -44,10 +44,10 @@
+ }
+ #endif
+ 
+-// Get log4cpp logger from main programm
++// Get log4cpp logger from main program
+ extern log4cpp::Category& logger;
+ 
+-// Pass unparsed packets number to main programm
++// Pass unparsed packets number to main program
+ extern uint64_t total_unparsed_packets;
+ 
+ // Global configuration map
+--- a/src/tests/patch_for_libcuckoo_as_flow_tracking_structure.patch
++++ b/src/tests/patch_for_libcuckoo_as_flow_tracking_structure.patch
+@@ -26,7 +26,7 @@
+ --- a/src/fastnetmon.cpp
+ +++ b/src/fastnetmon.cpp
+ @@ -268,6 +268,8 @@ void process_packet(simple_packet& current_packet);
+- void traffic_draw_programm();
++ void traffic_draw_program();
+  void interruption_signal_handler(int signal_number);
+  
+ +cuckoohash_map<std::string, map_element, CityHasher<std::string> > flow_tracking_table_new_generation;
+--- a/src/tests/pfring_parser_zc_issue.c
++++ b/src/tests/pfring_parser_zc_issue.c
+@@ -59,7 +59,7 @@
+     pfring_set_application_name(pf_ring_descr, (char*)"fastnetmon");
+ 
+     if (pfring_set_application_name_result != 0) {
+-        std::cout << "Can't set programm name for PF_RING: pfring_set_application_name";
++        std::cout << "Can't set program name for PF_RING: pfring_set_application_name";
+     }
+ 
+     pfring_version(pf_ring_descr, &version);

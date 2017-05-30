@@ -1,0 +1,28 @@
+From fb13a55c5dbc745a6b302b7e129b6f4df7ace992 Mon Sep 17 00:00:00 2001
+From: Benjamin Drung <benjamin.drung@profitbricks.com>
+Date: Mon, 29 May 2017 16:54:27 +0200
+Subject: [PATCH 3/3] Add documentation key to systemd service file
+
+Documentation for systemd service files can be automatically viewed
+using systemctl help servicename if this field is present. Thus add the
+relevant man page, the local and online documentation to the
+documentation key.
+Forwarded: yes, https://github.com/pavel-odintsov/fastnetmon/pull/663
+---
+ src/fastnetmon.service.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/fastnetmon.service.in b/src/fastnetmon.service.in
+index ffca8b8..e50d1c3 100644
+--- a/src/fastnetmon.service.in
++++ b/src/fastnetmon.service.in
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=FastNetMon - DoS/DDoS analyzer with sflow/netflow/mirror support
++Documentation=man:fastnetmon(1)
+ After=syslog.target network.target remote-fs.target
+  
+ [Service]
+-- 
+2.11.0
+

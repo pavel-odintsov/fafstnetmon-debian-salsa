@@ -1,0 +1,16 @@
+Description: ndpi does not build against ndpi 1.8 due to API changes
+Author: Benjamin Drung <benjamin.drung@profitbricks.com>
+Bug: https://github.com/pavel-odintsov/fastnetmon/issues/597
+Last-Update: 2017-05-08
+
+--- fastnetmon-1.1.3.orig/src/fast_dpi.cpp
++++ fastnetmon-1.1.3/src/fast_dpi.cpp
+@@ -35,7 +35,7 @@ struct ndpi_detection_module_struct* ini
+     u_int32_t detection_tick_resolution = 1000;
+     
+     struct ndpi_detection_module_struct* my_ndpi_struct =
+-        ndpi_init_detection_module(detection_tick_resolution, malloc, free, debug_printf);
++        ndpi_init_detection_module();
+ 
+     if (my_ndpi_struct == NULL) {
+         // printf("Can't init nDPI");
