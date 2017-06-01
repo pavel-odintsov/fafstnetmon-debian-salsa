@@ -34,7 +34,7 @@ License: GPL-2
 Files: debian/*
 Copyright: 2015-2017 Pavel Odintsov <pavel.odintsov@gmail.com>
            2017 Benjamin Drung <benjamin.drung@profitbricks.com>
-		   2017 Patrick Matthäi <pmatthaei@debian.org>
+           2017 Patrick Matthäi <pmatthaei@debian.org>
 License: GPL-2
 
 License: Apache-2.0
