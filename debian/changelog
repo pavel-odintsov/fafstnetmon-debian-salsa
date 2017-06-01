@@ -1,4 +1,13 @@
-fastnetmon (1.1.3-1) unstable; urgency=low
+fastnetmon (1.1.3-2) UNRELEASED; urgency=medium
+
+  * Add myself as uploader.
+  * Wrap dependencies in debian/control.
+  * Remove superfluous lsb-base dependency.
+  * Make debian/watch compatible with Jessie.
+
+ -- Patrick Matthäi <pmatthaei@debian.org>  Thu, 01 Jun 2017 10:40:32 +0200
+
+fastnetmon (1.1.3-1) unstable; urgency=medium
 
   * Initial release (Closes: #862104)
 
