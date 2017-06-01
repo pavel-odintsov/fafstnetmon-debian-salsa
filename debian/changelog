@@ -1,4 +1,4 @@
-fastnetmon (1.1.3-1) unstable; urgency=medium
+fastnetmon (1.1.3-1) unstable; urgency=low
 
   * Initial release (Closes: #862104)
 
