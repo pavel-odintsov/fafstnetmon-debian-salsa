@@ -6,6 +6,7 @@
 0001-Install-sysvinit-script-on-Debian-Ubuntu.patch
 0001-Remove-tracking-code-because-nobody-will-happy-with-.patch
 0001-Removed-code-which-uses-x86_only-features-to-fix-htt.patch
+0001-GoBGP-project-re-licensed-this-file-in-BSD-terms-for.patch
 disable-rpath.patch
 use-pkg-config.patch
 support-system-libraries.patch
