@@ -1,3 +1,10 @@
+fastnetmon (1.1.3+dfsg-2) unstable; urgency=medium
+
+  * Removed code which uses x86_only features (Closes: #869621)
+  * GoBGP project re-licensed gobgp_api_client.proto from Apache to MIT/Expat
+
+ -- Benjamin Drung <benjamin.drung@profitbricks.com>  Wed, 26 Jul 2017 12:33:03 +0200
+
 fastnetmon (1.1.3+dfsg-1) unstable; urgency=medium
 
   * Initial release (Closes: #862104)
