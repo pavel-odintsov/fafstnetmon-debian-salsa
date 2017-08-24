@@ -1,3 +1,11 @@
+fastnetmon (1.1.3+dfsg-3) unstable; urgency=medium
+
+  * Disable Lua support for architectures where Lua is missing
+  * Disable netmap support on hurd-i386 (Closes: #869622)
+  * Bump Standards-Version to 4.1.0 (no changes needed)
+
+ -- Benjamin Drung <benjamin.drung@profitbricks.com>  Thu, 24 Aug 2017 17:02:57 +0200
+
 fastnetmon (1.1.3+dfsg-2) unstable; urgency=medium
 
   * Removed code which uses x86_only features (Closes: #869621)
