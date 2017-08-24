@@ -7,6 +7,8 @@
 0001-Remove-tracking-code-because-nobody-will-happy-with-.patch
 0001-Removed-code-which-uses-x86_only-features-to-fix-htt.patch
 0001-GoBGP-project-re-licensed-this-file-in-BSD-terms-for.patch
+0001-Introduced-an-option-to-disable-Netmap-plugin.patch
+0002-Reworked-parser-code-to-avoid-Netmap-dependencies.patch
 0001-Support-setting-ENABLE_LUA_SUPPORT.patch
 disable-rpath.patch
 use-pkg-config.patch
