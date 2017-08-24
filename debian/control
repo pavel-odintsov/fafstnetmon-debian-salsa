@@ -3,7 +3,7 @@ Maintainer: Benjamin Drung <benjamin.drung@profitbricks.com>
 Uploaders: Patrick Matthäi <pmatthaei@debian.org>
 Section: net
 Priority: optional
-Standards-Version: 4.0.0
+Standards-Version: 4.1.0
 Build-Depends: cmake,
                debhelper (>= 9),
                libboost-atomic-dev,
