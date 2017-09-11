@@ -15,3 +15,4 @@ use-pkg-config.patch
 support-system-libraries.patch
 support-ndpi-1.8.patch
 remove-obsolete-syslog-target.patch
+use-pkg-config-for-luajit.patch

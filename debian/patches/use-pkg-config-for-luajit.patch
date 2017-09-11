@@ -1,0 +1,57 @@
+Description: Use pkg-config for finding luajit
+ Use pkg-config to determine the correct include path for luajit, which
+ changed from /usr/include/luajit-2.0/ (in libluajit-5.1-dev 2.0.4+dfsg-1) to
+ /usr/include/luajit-2.1/ (in libluajit-5.1-dev 2.1.0~beta3+dfsg-2).
+Author: Benjamin Drung <benjamin.drung@profitbricks.com>
+Bug-Debian: https://bugs.debian.org/873325
+
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -230,20 +230,12 @@
+ 
+     add_definitions(-DENABLE_LUA_HOOKS)
+ 
+-    set(LUAJIT_CUSTOM_INSTALL_PATH "/opt/luajit_2.0.4")
++    pkg_check_modules(LUAJIT REQUIRED luajit)
+ 
+-    link_directories("${LUAJIT_CUSTOM_INSTALL_PATH}/lib")
+-    include_directories("${LUAJIT_CUSTOM_INSTALL_PATH}/include")
+-
+-    find_library(LUAJIT_LIBRARY_PATH NAMES luajit-5.1 PATHS "${LUAJIT_CUSTOM_INSTALL_PATH}/lib" REQUIRED)
+-
+-    if (NOT LUAJIT_LIBRARY_PATH) 
+-        message(FATAL_ERROR "Could not find luajit library")
+-    endif()
+-
+-    target_link_libraries(netflow_plugin ${LUAJIT_LIBRARY_PATH})
+-    target_link_libraries(sflow_plugin ${LUAJIT_LIBRARY_PATH})
+-    target_link_libraries(fast_library ${LUAJIT_LIBRARY_PATH})
++    include_directories(${LUAJIT_INCLUDE_DIRS})
++    target_link_libraries(netflow_plugin ${LUAJIT_LIBRARIES})
++    target_link_libraries(sflow_plugin ${LUAJIT_LIBRARIES})
++    target_link_libraries(fast_library ${LUAJIT_LIBRARIES})
+ endif()
+ 
+ # pcap plugin
+--- a/src/fast_library.h
++++ b/src/fast_library.h
+@@ -25,7 +25,7 @@
+ #include "libpatricia/patricia.h"
+ 
+ #ifdef ENABLE_LUA_HOOKS
+-#include <luajit-2.0/lua.hpp>
++#include <lua.hpp>
+ #endif
+ 
+ #define TCP_FIN_FLAG_SHIFT 1
+--- a/src/netflow_plugin/netflow_collector.cpp
++++ b/src/netflow_plugin/netflow_collector.cpp
+@@ -28,7 +28,7 @@
+ #include "log4cpp/Priority.hh"
+ 
+ #ifdef ENABLE_LUA_HOOKS
+-#include <luajit-2.0/lua.hpp>
++#include <lua.hpp>
+ #endif
+ 
+ #ifdef ENABLE_LUA_HOOKS
