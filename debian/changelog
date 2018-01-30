@@ -1,3 +1,14 @@
+fastnetmon (1.1.3+dfsg-5) unstable; urgency=medium
+
+  * Support nDPI 2.2 (Closes: #887623)
+  * Move packaging repository to salsa.debian.org
+  * Bump Standards-Version to 4.1.3 (no changes needed)
+  * Switch to debhelper 11
+  * Disable luajit support also on ia64, powerpc, and powerpcspe
+  * Link against atomic if __sync_fetch_and_add is missing (Closes: #869805)
+
+ -- Benjamin Drung <benjamin.drung@profitbricks.com>  Tue, 30 Jan 2018 12:29:33 +0100
+
 fastnetmon (1.1.3+dfsg-4) unstable; urgency=medium
 
   * Use pkg-config for finding luajit (Closes: #873325)
