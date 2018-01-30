@@ -1,0 +1,54 @@
+From 1635a144f68413c08115e812e29df165f22e1538 Mon Sep 17 00:00:00 2001
+From: Benjamin Drung <benjamin.drung@profitbricks.com>
+Date: Tue, 30 Jan 2018 12:15:13 +0100
+Subject: [PATCH] Link against atomic if __sync_fetch_and_add_8 is missing
+
+src/fastnetmon.cpp uses __sync_fetch_and_add(). Some architectures (like
+mips, mipsel, m68k, powerpc, sh4) do not provide these built-in
+functions and need to link against atomic to provide this function.
+
+Bug-Debian: https://bugs.debian.org/869805
+---
+ src/CMakeLists.txt | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 6f3a10e..0194a5a 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -21,6 +21,9 @@ project(FastNetMon)
+ # Get convinient paths for all system folders: http://www.cmake.org/gitweb?p=cmake.git;a=commitdiff;h=a262fe09
+ # include(GNUInstallDirs)
+ 
++include(CheckCXXCompilerFlag)
++include(CheckLibraryExists)
++
+ # Enable it and fix all warnigns!
+ # add_definitions ("-Wall")
+ 
+@@ -97,6 +100,22 @@ execute_process(COMMAND git rev-list HEAD COMMAND head -n 1 OUTPUT_VARIABLE GIT_
+ set(FASTNETMON_APPLICATION_VERSION "1.1.3 master git-${GIT_LAST_COMMIT_HASH}")
+ configure_file(fast_platform.h.template "${PROJECT_SOURCE_DIR}/fast_platform.h")
+ 
++CHECK_CXX_SOURCE_COMPILES("
++#include <cstdint>
++int main() {
++    uint64_t x = 1;
++    __sync_fetch_and_add(&x, 0);
++    return x;
++}
++" HAVE__SYNC_FETCH_AND_ADD)
++
++if (NOT HAVE__SYNC_FETCH_AND_ADD)
++    check_library_exists(atomic __sync_fetch_and_add_8 "" HAVE_LIBATOMIC)
++    if (HAVE_LIBATOMIC)
++        target_link_libraries(fastnetmon atomic)
++    endif()
++endif()
++
+ # With this flag we can disable PF_RING build via console: cmake .. -DDISABLE_PF_RING_SUPPORT=ON
+ if (NOT DISABLE_PF_RING_SUPPORT) 
+     if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+-- 
+2.14.1
+

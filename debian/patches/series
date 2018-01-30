@@ -17,3 +17,4 @@ support-ndpi-1.8.patch
 Support-nDPI-2.2.patch
 remove-obsolete-syslog-target.patch
 use-pkg-config-for-luajit.patch
+link-agains-atomic.patch
