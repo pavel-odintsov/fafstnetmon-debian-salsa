@@ -12,6 +12,10 @@ ifeq (,$(filter-out hurd-i386,$(DEB_HOST_ARCH)))
 EXTRA_ARGS += -DDISABLE_NETMAP_SUPPORT=ON
 endif
 
+ifeq (,$(filter-out mips mipsel m68k powerpc powerpcspe sh4,$(DEB_HOST_ARCH)))
+EXTRA_ARGS += -DUSE_NEW_ATOMIC_BUILTINS=ON
+endif
+
 %:
 	dh $@ --buildsystem=cmake --sourcedirectory=src
 
