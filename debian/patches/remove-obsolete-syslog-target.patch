@@ -1,4 +1,4 @@
-Description: Remove obsolete syslog target from from systemd service
+Description: Remove obsolete syslog target from systemd service
 Author: Benjamin Drung <benjamin.drung@profitbricks.com>
 Last-Update: 2017-05-30
 
