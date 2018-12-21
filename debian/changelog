@@ -1,8 +1,13 @@
-fastnetmon (1.1.3+dfsg-6.1) UNRELEASED; urgency=medium
+fastnetmon (1.1.3+dfsg-7) unstable; urgency=medium
 
+  [ Jesse Norell ]
   * Fixed insecure permissions for fastnetmon.dat
 
- -- Jesse Norell <jesse@kci.net>  Thu, 20 Dec 2018 11:03:57 -0700
+  [ Benjamin Drung ]
+  * Update my email address to @cloud.ionos.com
+  * Bump Standards-Version to 4.2.1 (no changes needed)
+
+ -- Benjamin Drung <benjamin.drung@cloud.ionos.com>  Fri, 21 Dec 2018 11:44:23 +0100
 
 fastnetmon (1.1.3+dfsg-6) unstable; urgency=medium
 
