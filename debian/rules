@@ -3,7 +3,7 @@
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 # Disable Lua support for all architectures where libluajit-5.1-dev is not available
-ifeq (,$(filter-out alpha hppa ia64 m68k powerpc powerpcspe s390x sh4 sparc64 x32,$(DEB_HOST_ARCH)))
+ifeq (,$(filter-out alpha hppa ia64 m68k powerpc powerpcspe riscv64 s390x sh4 sparc64 x32,$(DEB_HOST_ARCH)))
 EXTRA_ARGS = -DENABLE_LUA_SUPPORT=OFF
 endif
 
