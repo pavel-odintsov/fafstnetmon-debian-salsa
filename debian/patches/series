@@ -21,3 +21,4 @@ remove-obsolete-syslog-target.patch
 use-pkg-config-for-luajit.patch
 link-agains-atomic.patch
 secure-dat-file-permissions.patch
+Support-nDPI-2.6.patch

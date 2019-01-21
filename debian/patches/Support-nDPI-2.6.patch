@@ -1,0 +1,20 @@
+From: Benjamin Drung <benjamin.drung@cloud.ionos.com>
+Date: Mon, 21 Jan 2019 14:24:30 +0100
+Subject: [PATCH] Support nDPI 2.6
+
+The path for ndpi_api.h and the other header file has changed from
+/usr/include/libndpi-1.8.0/libndpi/ to just /usr/include/ndpi.
+
+Bug-Debian: https://bugs.debian.org/919861
+
+--- a/src/fast_dpi.h
++++ b/src/fast_dpi.h
+@@ -2,7 +2,7 @@
+ #define FAST_DPI_H
+ 
+ #include <stdlib.h>
+-#include "libndpi/ndpi_api.h"
++#include <ndpi_api.h>
+ 
+ struct ndpi_detection_module_struct* init_ndpi();
+ 
