@@ -27,10 +27,6 @@ Files: src/sflow_plugin/sflow.h
 Copyright: 2002-2011 InMon Corp
 License: sflow
 
-Files: src/tests/lru_cache/lru_cache.*
-Copyright: 2004-2011 by Patrick Audley
-License: GPL-2
-
 Files: debian/*
 Copyright: 2015-2017 Pavel Odintsov <pavel.odintsov@gmail.com>
            2017 Benjamin Drung <benjamin.drung@profitbricks.com>
