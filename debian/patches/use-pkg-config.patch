@@ -5,7 +5,7 @@ Last-Update: 2017-05-08
 
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -195,15 +195,10 @@
+@@ -233,15 +233,10 @@
  
      add_library(fast_dpi STATIC fast_dpi.cpp)
  

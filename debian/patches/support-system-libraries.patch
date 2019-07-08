@@ -5,7 +5,7 @@ Last-Update: 2017-05-08
 
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -111,7 +111,7 @@
+@@ -144,7 +144,7 @@
      # Set path to manually compiled PF_RING
      set(PFRING_INCLUDE_DIRS "${PFRING_CUSTOM_INSTALL_PATH}/include")
  
@@ -14,7 +14,7 @@ Last-Update: 2017-05-08
  
      if (NOT PFRING_LIBRARIES)
          message(FATAL_ERROR "Could not find PF_RING")
-@@ -220,7 +220,7 @@
+@@ -258,7 +258,7 @@
      link_directories("${LUAJIT_CUSTOM_INSTALL_PATH}/lib")
      include_directories("${LUAJIT_CUSTOM_INSTALL_PATH}/include")
  
@@ -23,7 +23,7 @@ Last-Update: 2017-05-08
  
      if (NOT LUAJIT_LIBRARY_PATH) 
          message(FATAL_ERROR "Could not find luajit library")
-@@ -255,8 +255,8 @@
+@@ -293,8 +293,8 @@
      add_definitions(-DENABLE_GOBGP)
      add_library(gobgp_action STATIC actions/gobgp_action.cpp)
  
@@ -34,7 +34,7 @@ Last-Update: 2017-05-08
  
      if (GOBGP_INCLUDES_FOLDER AND GOBGP_LIBRARY_PATH)
          message(STATUS "We found libgobgp and will link it: ${GOBGP_INCLUDES_FOLDER} ${GOBGP_LIBRARY_PATH}")
-@@ -270,10 +270,10 @@
+@@ -308,10 +308,10 @@
          message(FATAL_ERROR "Could not find libgobgp")
      endif()
  
@@ -49,7 +49,7 @@ Last-Update: 2017-05-08
  
      if (GRPC_INCLUDES_FOLDER AND GRPC_LIBRARY_GRPC_PATH AND GRPC_LIBRARY_GPR_PATH AND GRPC_LIBRARY_GRPC_CPP_UNSECURE_PATH)
          include_directories(${GRPC_INCLUDES_FOLDER})
-@@ -299,7 +299,7 @@
+@@ -337,7 +337,7 @@
      # message(STATUS "grpc: ${GRPC_INCLUDES_FOLDER} ${GRPC_LIBRARY_GRPC_PATH} ${GRPC_LIBRARY_GPR_PATH}")
      # message(STATUS ${PROJECT_BINARY_DIR})
  
@@ -58,7 +58,7 @@ Last-Update: 2017-05-08
  
      if (PROTOC_BINARY)
          message(STATUS "Found protoc protobuf compiler: ${PROTOC_BINARY}")
-@@ -394,10 +394,10 @@
+@@ -434,10 +434,10 @@
  ### Move this code to cmake module
  
  # Try to find hiredis in a specific folder
@@ -71,7 +71,7 @@ Last-Update: 2017-05-08
  
  if (HIREDIS_INCLUDES_FOLDER AND HIREDIS_LIBRARY_PATH) 
      message(STATUS "We found hiredis library and will build Redis support ${HIREDIS_INCLUDES_FOLDER} ${HIREDIS_LIBRARY_PATH}")
-@@ -410,12 +410,12 @@
+@@ -450,12 +450,12 @@
  endif()
  
  ### Find mongo-c
@@ -88,7 +88,7 @@ Last-Update: 2017-05-08
  
  if (MONGOC_INCLUDES_FOLDER AND MONGOC_LIBRARY_PATH AND BSON_INCLUDES_FOLDER AND BSON_LIBRARY_PATH)
      message(STATUS "We found mongo-c library ${MONGOC_INCLUDES_FOLDER} ${MONGOC_LIBRARY_PATH} ${BSON_INCLUDES_FOLDER} ${BSON_LIBRARY_PATH}")
-@@ -432,9 +432,9 @@
+@@ -472,9 +472,9 @@
  
  ### Look for libpcap
  
@@ -100,7 +100,7 @@ Last-Update: 2017-05-08
  
  #if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH) 
  #    message(STATUS "We found pcap library ${LIBPCAP_LIBRARY_PATH}")
-@@ -447,10 +447,10 @@
+@@ -487,10 +487,10 @@
  ### Look for log4cpp
  
  # Try to find log4cpp includes path
@@ -113,7 +113,7 @@ Last-Update: 2017-05-08
  
  if (LOG4CPP_INCLUDES_FOLDER AND LOG4CPP_LIBRARY_PATH)
      include_directories(${LOG4CPP_INCLUDES_FOLDER})
-@@ -461,8 +461,8 @@
+@@ -501,8 +501,8 @@
  
  ### Look for jsonc
  

@@ -7,7 +7,7 @@ Bug-Debian: https://bugs.debian.org/873325
 
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -230,20 +230,12 @@
+@@ -253,20 +253,12 @@
  
      add_definitions(-DENABLE_LUA_HOOKS)
  
