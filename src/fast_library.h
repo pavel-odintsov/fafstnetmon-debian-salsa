@@ -53,6 +53,7 @@ std::string convert_int_to_string(int value);
 std::string print_ipv6_address(struct in6_addr& ipv6_address);
 std::string print_simple_packet(simple_packet packet);
 std::string convert_timeval_to_date(struct timeval tv);
+bool convert_hex_as_string_to_uint(std::string hex, uint32_t& value);
 
 int extract_bit_value(uint8_t num, int bit);
 int extract_bit_value(uint16_t num, int bit);
@@ -68,7 +69,7 @@ uint64_t MurmurHash64A(const void* key, int len, uint64_t seed);
 std::string print_tcp_flags(uint8_t flag_value);
 int timeval_subtract(struct timeval* result, struct timeval* x, struct timeval* y);
 bool folder_exists(std::string path);
-bool is_cidr_subnet(const char* subnet);
+bool is_cidr_subnet(std::string subnet);
 bool is_v4_host(std::string host);
 bool file_exists(std::string path);
 uint32_t convert_cidr_to_binary_netmask(unsigned int cidr);
@@ -103,9 +104,6 @@ std::string get_direction_name(direction direction_value);
 subnet_t convert_subnet_from_string_to_binary(std::string subnet_cidr);
 std::vector <std::string> split_strings_to_vector_by_comma(std::string raw_string);
 subnet_t convert_subnet_from_string_to_binary_with_cidr_format(std::string subnet_cidr);
-
-inline uint64_t read_tsc_cpu_register();
-uint64_t get_tsc_freq_with_sleep();
 
 #ifdef __linux__
 bool manage_interface_promisc_mode(std::string interface_name, bool switch_on);

@@ -208,13 +208,10 @@ uint32_t convert_cidr_to_binary_netmask(unsigned int cidr) {
 }
 
 
-bool is_cidr_subnet(const char* subnet) {
+bool is_cidr_subnet(std::string subnet) {
     boost::cmatch what;
-    if (regex_match(subnet, what, regular_expression_cidr_pattern)) {
-        return true;
-    } else {
-        return false;
-    }
+
+    return regex_match(subnet.c_str(), what, regular_expression_cidr_pattern);
 }
 
 bool is_v4_host(std::string host) {
@@ -588,6 +585,11 @@ bool read_pid_from_file(pid_t& pid, std::string pid_path) {
 }
 
 bool store_data_to_graphite(unsigned short int graphite_port, std::string graphite_host, graphite_data_t graphite_data) {
+    // Do not bother Graphite if we do not have any metrics here
+    if (graphite_data.size() == 0) {
+        return true;
+    }
+
     int client_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (client_sockfd < 0) {
@@ -785,6 +787,8 @@ direction get_packet_direction_ipv6(patricia_tree_t* lookup_tree, struct in6_add
     found_patrica_node = NULL;
     prefix_for_check_address.add.sin6 = src_ipv6;
 
+    found_patrica_node = patricia_search_best2(lookup_tree, &prefix_for_check_address, 1);
+    
     if (found_patrica_node) {
         our_ip_is_source = true;
     }
@@ -1005,29 +1009,6 @@ bool call_lua_function(std::string function_name, lua_State* lua_state_param, st
 }
 
 #endif
-
-inline uint64_t read_tsc_cpu_register() {
-    union {
-        uint64_t tsc_64;
-            struct {
-                uint32_t lo_32;
-                uint32_t hi_32;
-            };  
-    } tsc;
-
-    asm volatile("rdtsc" :
-        "=a" (tsc.lo_32),
-        "=d" (tsc.hi_32));
-    return tsc.tsc_64;
-}
-
-uint64_t get_tsc_freq_with_sleep() {
-    uint64_t start = read_tsc_cpu_register();
-            
-    sleep(1);
-
-    return read_tsc_cpu_register() - start;
-}
 
 json_object* serialize_attack_description_to_json(attack_details& current_attack) {
     json_object* jobj = json_object_new_object();
@@ -1302,4 +1283,13 @@ bool store_data_to_stats_server(unsigned short int graphite_port, std::string gr
     } else {
         return false;
     }
+}
+
+bool convert_hex_as_string_to_uint(std::string hex, uint32_t& value) {
+    std::stringstream ss;
+
+    ss << std::hex << hex;
+    ss >> value;
+
+    return ss.fail();
 }

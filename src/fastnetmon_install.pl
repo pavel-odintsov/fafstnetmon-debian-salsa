@@ -4,9 +4,13 @@ use strict;
 use warnings;
 
 use Getopt::Long;
+use File::Basename;
+
+use Term::ANSIColor;
 
 my $pf_ring_version = '6.0.3';
 my $pf_ring_url = "https://github.com/ntop/PF_RING/archive/v$pf_ring_version.tar.gz";
+my $pf_ring_sha = '9fb8080defd1a079ad5f0097e8a8adb5bc264d00';
 
 my $fastnetmon_git_path = 'https://github.com/pavel-odintsov/fastnetmon.git';
 
@@ -27,8 +31,13 @@ my $install_log_path = '/tmp/fastnetmon_install.log';
 # But we have some patches for NTP and DNS protocols here
 my $ndpi_repository = 'https://github.com/pavel-odintsov/nDPI.git';
 
-my $stable_branch_name = 'v1.1.2';
+my $stable_branch_name = 'v1.1.3';
 my $we_use_code_from_master = '';
+
+# By default use mirror
+my $use_mirror = 1;
+
+my $mirror_url = 'https://github.com/pavel-odintsov/fastnetmon_dependencies/raw/master/files'; 
 
 my $os_type = '';
 my $distro_type = ''; 
@@ -59,32 +68,34 @@ my $build_binary_environment = '';
 # With this option we could build full binary package
 my $create_binary_bundle = '';
 
+my $use_modern_pf_ring = '';
+
 # Get options from command line
 GetOptions(
     'use-git-master' => \$we_use_code_from_master,
     'do-not-track-me' => \$do_not_track_me,
     'build-binary-environment' => \$build_binary_environment,
     'create-binary-bundle' => \$create_binary_bundle,
+    'use-modern-pf-ring' => \$use_modern_pf_ring,
 );
 
-my $we_have_ndpi_support = '';
-my $we_have_luajit_support = '';
-my $we_have_hiredis_support = '';
-my $we_have_log4cpp_support = '';
+# Bump PF_RING version
+if ($use_modern_pf_ring) {
+    $pf_ring_version = '6.6.0';
+    $pf_ring_url = "https://github.com/ntop/PF_RING/archive/$pf_ring_version.tar.gz";
+    $pf_ring_sha = '79ff86e48df857e4e884646accfc97bdcdc54b04';
+}
+
+my $we_have_ndpi_support = '1';
+my $we_have_luajit_support = '1';
+my $we_have_hiredis_support = '1';
+my $we_have_log4cpp_support = '1';
 my $we_have_pfring_support = '';
-my $we_have_mongo_support = '';
+my $we_have_mongo_support = '1';
 my $we_have_protobuf_support = '';
 my $we_have_grpc_support = '';
 my $we_have_golang_support = '';
 my $we_have_gobgp_support = '';
-
-if ($we_use_code_from_master) {
-    $we_have_ndpi_support = 1;
-    $we_have_luajit_support = 1;
-    $we_have_hiredis_support = 1;
-    $we_have_log4cpp_support = 1;
-    $we_have_mongo_support = 1;
-}
 
 my $enable_gobgp_backend = '';
 
@@ -98,11 +109,38 @@ if ($enable_gobgp_backend) {
 main();
 
 sub welcome_message {
-    print "Hello, my dear Customer!\n\n";
+    # Clear screen
+    print "\033[2J";
+    # Jump to 0.0 position
+    print "\033[0;0H";
 
-    print "We need about ten minutes of your time for installing FastNetMon toolkit\n";
-    print "You could make coffee/tee or you will help project and fill this short survey:   http://bit.ly/fastnetmon_survey\n";
-    print "I would be very glad if you spent this time and shared your DDoS experience :)\n\n";
+    print color('bold green');
+    print "Hi there!\n\n";
+    print color('reset');
+    
+    print "We need about ten minutes of your time for installing FastNetMon toolkit\n\n";
+    print "Also, we have ";
+
+    print color('bold cyan');
+    print "FastNetMon Advanced";
+    print color('reset');
+
+    print " version with big number of improvements: ";
+
+    print color('bold cyan');
+    print "https://fastnetmon.com/fastnetmon-advanced/?utm_source=community_install_script&utm_medium=email\n\n";
+    print color('reset');
+
+    print "You could order free one-month trial for Advanced version here ";
+    print color('bold cyan');
+    print "https://fastnetmon.com/trial/?utm_source=community_install_script&utm_medium=email\n\n";
+    print color('reset');
+
+    print "In case of any issues with install script please use ";
+    print color('bold cyan');
+    print "https://fastnetmon.com/contact/?utm_source=community_install_script&utm_medium=email";
+    print color('reset');
+    print " to report them\n\n";
 }
 
 sub get_logical_cpus_number {
@@ -142,7 +180,15 @@ sub get_user_email {
     my $user_entered_valid_email = 0;
 
     do {
-        print "\nPlease provide your email address at company domain for free tool activation.\nWe will not share your email with any third party companies.\nEmail: ";
+        print "\n";
+        print "Please provide your business email address to receive important information about security updates\n";
+        print "In addition, we can send promotional messages to this email (very rare)\n";
+        print "You can find our privacy policy here https://fastnetmon.com/privacy-policy/\n";
+        print "We will provide an option to disable any email from us\n";
+        print "We will not share your email with any third party companies.\n\n";
+        print "If you continue install process you accept our subscription rules automatically\n\n";
+        
+        print "Email: ";
         my $raw_email = <STDIN>;
         chomp $raw_email;
         
@@ -167,7 +213,7 @@ sub main {
 
     # We could get huge speed benefits with this option
     if ($cpus_number > 1) { 
-        print "You have really nice server with $cpus_number CPU's and we will use they all for build process :)\n";
+        print "You have really nice server with $cpus_number CPU's and we will use them all for build process :)\n";
         $make_options = "-j $cpus_number";
     }
 
@@ -177,7 +223,7 @@ sub main {
     }
 
     if ($os_type eq 'macosx') {
-        # Really strange issue https://github.com/FastVPSEestiOu/fastnetmon/issues/415 
+        # Really strange issue https://github.com/pavel-odintsov/fastnetmon/issues/415 
         $we_have_hiredis_support = 0;
     }
 
@@ -203,9 +249,7 @@ sub main {
         install_pf_ring();
     }
 
-    if ($we_use_code_from_master) {
-        install_json_c();
-    }   
+    install_json_c();
 
     if ($we_have_ndpi_support) {
         install_ndpi();
@@ -357,6 +401,14 @@ sub get_sha1_sum {
 
 sub download_file {
     my ($url, $path, $expected_sha1_checksumm) = @_;
+
+    # We use pretty strange format for $path and need to sue special function to extract it
+    my ($path_filename, $path_dirs, $path_suffix) = fileparse($path);
+
+    # $path_filename
+    if ($use_mirror) {
+        $url = $mirror_url . "/" . $path_filename;
+    }
 
     `wget --no-check-certificate --quiet '$url' -O$path`;
 
@@ -690,6 +742,11 @@ sub install_json_c {
     } else { 
         exec_command("sed -i '355 s#^#//#' json_tokener.c");
         exec_command("sed -i '360 s#^#//#' json_tokener.c");
+        
+        # Workaround complaints from fresh compilers
+        if ($distro_type eq 'ubuntu' && $distro_version eq '18.04') {
+            exec_command("sed -i -e '381 s/AM_CFLAGS =/AM_CFLAGS = -Wimplicit-fallthrough=0/ ' Makefile.in");
+        }
     }
 
     print "Build it\n";
@@ -1245,14 +1302,25 @@ sub install_pf_ring {
             }
         }
     } elsif ($distro_type eq 'centos') {
+        my @centos_dependency_packages = ('make', 'bison', 'flex', 'gcc', 'gcc-c++', 'dkms', 'numactl-devel', 'subversion');
+
+        # This package is not going to install devel headers for current kernel!
         my $kernel_package_name = 'kernel-devel';
 
         # Fix deplist for OpenVZ
         if ($kernel_version =~ /stab/) {
             $kernel_package_name = "vzkernel-devel-$kernel_version";
         }
-    
-        yum('make', 'bison', 'flex', $kernel_package_name, 'gcc', 'gcc-c++', 'dkms', 'numactl-devel', 'subversion');
+
+        push @centos_dependency_packages, $kernel_package_name;
+  
+        my $centos_kernel_version = `uname -r`;
+        chomp $centos_kernel_version;
+ 
+        # But this package will install kernel devel headers for current kernel version!
+        push @centos_dependency_packages, "$kernel_package_name-$centos_kernel_version";
+
+        yum(@centos_dependency_packages);
     } elsif ($distro_type eq 'gentoo') {
         my @gentoo_packages_for_pfring = ('subversion', 'sys-process/numactl', 'wget', 'tar');
 
@@ -1268,7 +1336,7 @@ sub install_pf_ring {
     my $we_could_install_kernel_modules = 1;
     if ($we_could_install_kernel_modules) {
         print "Download PF_RING $pf_ring_version sources\n";
-        my $pfring_download_result = download_file($pf_ring_url, $pf_ring_archive_path, '9fb8080defd1a079ad5f0097e8a8adb5bc264d00');  
+        my $pfring_download_result = download_file($pf_ring_url, $pf_ring_archive_path, $pf_ring_sha);
 
         unless ($pfring_download_result) {
             die "Can't download PF_RING sources\n";
@@ -1375,18 +1443,13 @@ sub install_fastnetmon {
             'gpm-devel', 'cmake', 'pkgconfig', 'hiredis-devel',
         );
 
+        if ($distro_type eq 'centos' && int($distro_version) == 7) {
+            push @fastnetmon_deps, 'net-tools';
+        }
+
         # Do not install Boost when we build it manually
         unless ($build_binary_environment) {
             @fastnetmon_deps = (@fastnetmon_deps, 'boost-devel', 'boost-thread')
-        }
-
-        if ($distro_version == 7) {
-            print "Your distro haven't log4cpp in stable EPEL packages and we install log4cpp from testing of EPEL\n";
-            # We should install log4cpp packages only in this order!
-            yum('https://kojipkgs.fedoraproject.org//packages/log4cpp/1.1.1/1.el7/x86_64/log4cpp-1.1.1-1.el7.x86_64.rpm',
-                'https://kojipkgs.fedoraproject.org//packages/log4cpp/1.1.1/1.el7/x86_64/log4cpp-devel-1.1.1-1.el7.x86_64.rpm'),
-        } else {
-            push @fastnetmon_deps, 'log4cpp-devel';
         }
 
         yum(@fastnetmon_deps);
@@ -1466,6 +1529,11 @@ sub install_fastnetmon {
 
         # We should specify compilir this way
         $cmake_params .= " -DCMAKE_C_COMPILER=/opt/gcc520/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc520/bin/g++ "; 
+    }
+
+    # Bump version in cmake build system
+    if ($use_modern_pf_ring) {
+        system("sed -i 's/pf_ring_6.0.3/pf_ring_$pf_ring_version/' ../CMakeLists.txt")
     }
 
     if (defined($ENV{'TRAVIS'}) && $ENV{'TRAVIS'}) {
