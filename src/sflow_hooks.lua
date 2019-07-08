@@ -7,7 +7,7 @@ local json = require("json")
 local ffi = require("ffi")
 
 -- Load declaration from the inside separate header file
--- This code should be in sync with https://github.com/FastVPSEestiOu/fastnetmon/blob/master/src/sflow_plugin/sflow_data.h
+-- This code should be in sync with https://github.com/pavel-odintsov/fastnetmon/blob/master/src/sflow_plugin/sflow_data.h
 -- We have changed all defines to actual values
 ffi.cdef([[
 typedef unsigned char u_char;
@@ -123,6 +123,7 @@ typedef struct _SFSample {
     uint8_t eth_dst[8];
 
     /* vlan */
+    uint32_t in_outer_vlan;
     uint32_t in_vlan;
     uint32_t in_priority;
     uint32_t internalPriority;

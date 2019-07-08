@@ -38,7 +38,7 @@ bool lua_hooks_enabled = false;
 std::string lua_hooks_path = "/usr/src/fastnetmon/src/netflow_hooks.lua";
 #endif
 
-// Get it from main programm
+// Get it from main program
 extern log4cpp::Category& logger;
 
 // Global configuration map
@@ -579,7 +579,7 @@ void nf10_flowset_to_store(u_int8_t* pkt, size_t len, struct NF10_HEADER* nf10_h
 }
 
 void nf9_flowset_to_store(u_int8_t* pkt, size_t len, struct NF9_HEADER* nf9_hdr, netflow9_template_records_map& template_records) {
-    // Should be done according to https://github.com/FastVPSEestiOu/fastnetmon/issues/147
+    // Should be done according to https://github.com/pavel-odintsov/fastnetmon/issues/147
     // if (template->total_len > len)
     //    return 1;
 
@@ -793,8 +793,8 @@ void process_netflow_packet_v10(u_int8_t* packet, u_int len, std::string client_
             break;
         case NF10_OPTIONS_FLOWSET_ID:
             // process_netflow_v10_options_template(packet + offset, flowset_len, source_id);
-            logger << log4cpp::Priority::INFO
-                   << "Received ipfix options flowset id, which is not supported";
+            //logger << log4cpp::Priority::INFO
+            //       << "Received ipfix options flowset id, which is not supported";
             /* Not implemented yet */
             break;
         default:
