@@ -1,6 +1,7 @@
 fastnetmon (1.1.4-2) UNRELEASED; urgency=medium
 
   * Bump Standards-Version to 4.6.0.
+  * Set Rules-Requires-Root to no.
 
  -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 19 Apr 2022 09:49:45 +0200
 

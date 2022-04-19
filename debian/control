@@ -4,6 +4,7 @@ Uploaders: Patrick Matthäi <pmatthaei@debian.org>
 Section: net
 Priority: optional
 Standards-Version: 4.6.0
+Rules-Requires-Root: no
 Build-Depends: cmake,
                debhelper (>= 11),
                libboost-atomic-dev,
