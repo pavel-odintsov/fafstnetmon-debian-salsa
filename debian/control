@@ -30,7 +30,8 @@ Vcs-Git: https://salsa.debian.org/debian/fastnetmon.git
 
 Package: fastnetmon
 Architecture: any
-Depends: lsb-base (>= 3.0-6), ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends},
+ ${shlibs:Depends}
 Description: fast DDoS analyzer with sflow/netflow/mirror support (community edition)
  FastNetMon is a very high performance distributed denial-of-service attack
  (DDoS attack) detector built on top of multiple packet capture engines:
