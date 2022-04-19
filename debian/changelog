@@ -1,5 +1,12 @@
-fastnetmon (1.1.4-2) UNRELEASED; urgency=medium
+fastnetmon (1.2.0-1) UNRELEASED; urgency=medium
 
+  * New upstream release.
+    - Remove patch Support-nDPI-2.6.
+    - Remove patch disable-rpath.
+    - Remove patch remove-obsolete-syslog-target.
+    - Remove patch support-system-libraries.
+    - Remove patch use-pkg-config-for-luajit.
+    - Remove patch use-pkg-config.
   * Bump Standards-Version to 4.6.0.
   * Set Rules-Requires-Root to no.
   * Remove old dependency on lsb-base.

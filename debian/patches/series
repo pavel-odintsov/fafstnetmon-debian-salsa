@@ -1,6 +1,0 @@
-disable-rpath.patch
-use-pkg-config.patch
-support-system-libraries.patch
-remove-obsolete-syslog-target.patch
-use-pkg-config-for-luajit.patch
-Support-nDPI-2.6.patch
