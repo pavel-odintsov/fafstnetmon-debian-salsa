@@ -12,6 +12,8 @@ fastnetmon (1.2.0-1) UNRELEASED; urgency=medium
   * Set Rules-Requires-Root to no.
   * Remove old dependency on lsb-base.
   * Upgrade packaging to debhelper compat level 13.
+  * Set myself as maintainer and Benjaming Drung as co-maintainer. Thanks for
+    your great work!
 
  -- Patrick Matthäi <pmatthaei@debian.org>  Tue, 19 Apr 2022 09:49:45 +0200
 
