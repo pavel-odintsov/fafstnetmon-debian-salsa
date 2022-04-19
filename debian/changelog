@@ -1,6 +1,7 @@
 fastnetmon (1.2.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+    - Add new build dependency libicu-dev.
     - Remove patch Support-nDPI-2.6.
     - Remove patch disable-rpath.
     - Remove patch remove-obsolete-syslog-target.
