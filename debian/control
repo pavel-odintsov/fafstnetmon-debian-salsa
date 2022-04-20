@@ -24,7 +24,6 @@ Build-Depends: cmake,
  libicu-dev,
  libmongoc-dev,
  libncurses5-dev,
- libndpi-dev,
  libpcap-dev,
  pkg-config
 Homepage: https://fastnetmon.com/
