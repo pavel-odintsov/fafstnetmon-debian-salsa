@@ -64,21 +64,6 @@ diff -Naur fastnetmon-1.2.0.orig/src/CMakeLists.txt fastnetmon-1.2.0/src/CMakeLi
  
      if (OPENSSL_INCLUDES_FOLDER AND OPENSSL_LIBRARY_PATH AND OPENSSL_CRYPTO_LIBRARY_PATH) 
          message(STATUS "We found OpenSSL library: ${OPENSSL_LIBRARY_PATH} ${OPENSSL_CRYPTO_LIBRARY_PATH}")
-@@ -509,11 +504,11 @@
-     endif()
- endif()
- 
--SET(CAPNP_SUPPORT TRUE)
-+SET(CAPNP_SUPPORT FALSE)
- 
- if (CAPNP_SUPPORT)
--    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
--    find_library(CAPNP_KJ_LIBRARY_PATH NAMES kj PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
-+    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib")
-+    find_library(CAPNP_KJ_LIBRARY_PATH NAMES kj PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib")
- 
-     if (CAPNP_LIBRARY_PATH AND CAPNP_KJ_LIBRARY_PATH)
-         message(STATUS "We found capnp and kj libraries: ${CAPNP_LIBRARY_PATH} ${CAPNP_KJ_LIBRARY_PATH}")
 @@ -530,12 +525,12 @@
  target_link_libraries(fast_library simple_packet_capnp)
  
