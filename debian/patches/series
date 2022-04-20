@@ -1,1 +1,3 @@
 01-use-system-paths.diff
+02-capnp-version-mismatch.diff
+03-printw-format-security.diff
