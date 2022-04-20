@@ -1,0 +1,13 @@
+# Temporary comment out this printw: error: format not a string literal and no format arguments [-Werror=format-security]
+
+diff -Naur fastnetmon-1.2.0+git20220420.orig/src/fastnetmon_client.cpp fastnetmon-1.2.0+git20220420/src/fastnetmon_client.cpp
+--- fastnetmon-1.2.0+git20220420.orig/src/fastnetmon_client.cpp	2022-04-20 08:37:46.012989738 +0200
++++ fastnetmon-1.2.0+git20220420/src/fastnetmon_client.cpp	2022-04-20 08:59:23.924662885 +0200
+@@ -96,7 +96,6 @@
+ 
+         reading_file.close();
+ 
+-        printw(screen_buffer.str().c_str());
+         // update screen
+         refresh();
+     }
