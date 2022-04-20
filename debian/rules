@@ -7,11 +7,6 @@ ifeq (,$(filter-out alpha hppa ia64 m68k powerpc powerpcspe riscv64 s390x sh4 sp
 EXTRA_ARGS = -DENABLE_LUA_SUPPORT=OFF
 endif
 
-# Disable netmap support on hurd-i386 (Closes: #869622)
-ifeq (,$(filter-out hurd-i386,$(DEB_HOST_ARCH)))
-EXTRA_ARGS += -DDISABLE_NETMAP_SUPPORT=ON
-endif
-
 ifeq (,$(filter-out mips mipsel m68k powerpc powerpcspe sh4,$(DEB_HOST_ARCH)))
 EXTRA_ARGS += -DUSE_NEW_ATOMIC_BUILTINS=ON
 endif
