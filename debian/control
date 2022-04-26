@@ -1,6 +1,5 @@
 Source: fastnetmon
 Maintainer: Patrick Matthäi <pmatthaei@debian.org>
-Uploaders: Benjamin Drung <bdrung@debian.org>
 Section: net
 Priority: optional
 Standards-Version: 4.6.0
