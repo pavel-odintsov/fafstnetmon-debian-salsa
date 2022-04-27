@@ -1,3 +1,0 @@
-[submodule "src/juniper_plugin/netconf"]
-	path = src/juniper_plugin/netconf
-	url = https://github.com/Juniper/netconf-php.git
