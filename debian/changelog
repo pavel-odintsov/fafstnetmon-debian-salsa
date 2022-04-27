@@ -1,7 +1,8 @@
 fastnetmon (1.2.0+git20220427-1) UNRELEASED; urgency=medium
 
   * New upstream release.
-    - Add new build dependency libicu-dev.
+    - Add new build dependency libicu-dev, capnproto and
+      golang-github-osrg-gobgp-dev.
     - Netmap and ndpi support has been removed.
       Closes: #981774
     - Remove patch Support-nDPI-2.6.
