@@ -1,4 +1,4 @@
-fastnetmon (1.2.0+git20220420-1) UNRELEASED; urgency=medium
+fastnetmon (1.2.0+git20220427-1) UNRELEASED; urgency=medium
 
   * New upstream release.
     - Add new build dependency libicu-dev.
