@@ -1,6 +1,6 @@
 diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0+git20220420/src/CMakeLists.txt
---- fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt       2022-04-20 08:37:46.004989790 +0200
-+++ fastnetmon-1.2.0+git20220420/src/CMakeLists.txt    2022-04-20 09:47:54.502114466 +0200
+--- fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt	2022-04-20 08:37:46.004989790 +0200
++++ fastnetmon-1.2.0+git20220420/src/CMakeLists.txt	2022-04-20 09:47:54.502114466 +0200
 @@ -68,9 +68,9 @@
      set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${FASTNETMON_LIBRARIES_GLOBAL_PATH}/boost_1_74_0/stage/lib;${ICU_CUSTOM_INSTALL_PATH}/lib;${FASTNETMON_LIBRARIES_GLOBAL_PATH}/gcc930/lib64")
  
@@ -14,16 +14,16 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (ICU_LIBRARY_UC_PATH AND ICU_LIBRARY_DATA_PATH AND ICU_LIBRARY_I18N_PATH)
          message(STATUS "Found libicu")
-@@ -165,7 +165,7 @@
-     add_definitions(-DNETMAP_PLUGIN)
- endif()
+@@ -173,7 +173,7 @@
+ 
+ message(STATUS "We will build Cap'N'Proto support")
  
 -find_program(CAPNP_BINARY capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/bin" NO_DEFAULT_PATH)
 +find_program(CAPNP_BINARY capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/bin")
  
  if (CAPNP_BINARY)
      message(STATUS "Found capnp compiler: ${CAPNP_BINARY}")
-@@ -278,10 +278,10 @@
+@@ -288,10 +288,10 @@
      add_definitions(-DENABLE_GOBGP)
      add_library(gobgp_action STATIC actions/gobgp_action.cpp)
  
@@ -38,7 +38,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (GRPC_INCLUDES_FOLDER AND GRPC_LIBRARY_GRPC_PATH AND GRPC_LIBRARY_GPR_PATH AND GRPC_LIBRARY_GRPC_CPP_PATH)
          include_directories(${GRPC_INCLUDES_FOLDER})
-@@ -310,7 +310,7 @@
+@@ -320,7 +320,7 @@
      # message(STATUS "grpc: ${GRPC_INCLUDES_FOLDER} ${GRPC_LIBRARY_GRPC_PATH} ${GRPC_LIBRARY_GPR_PATH}")
      # message(STATUS ${PROJECT_BINARY_DIR})
  
@@ -47,7 +47,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (PROTOC_BINARY)
          message(STATUS "Found protoc protobuf compiler: ${PROTOC_BINARY}")
-@@ -319,7 +319,7 @@
+@@ -329,7 +329,7 @@
      endif()
  
      # Search for gRPC plugin for protobuf, it's just binary
@@ -56,7 +56,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (GRPC_CPP_PLUGIN) 
          message(STATUS "Found Protobuf gRPC compiler plugin: ${GRPC_CPP_PLUGIN}")
-@@ -444,10 +444,10 @@
+@@ -454,10 +454,10 @@
  ### Move this code to cmake module
  
  # Try to find hiredis in a specific folder
@@ -69,7 +69,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
  if (HIREDIS_INCLUDES_FOLDER AND HIREDIS_LIBRARY_PATH) 
      message(STATUS "We found hiredis library ${HIREDIS_INCLUDES_FOLDER} ${HIREDIS_LIBRARY_PATH}")
-@@ -462,9 +462,9 @@
+@@ -472,9 +472,9 @@
  
  set(ENABLE_OPENSSL_SUPPORT TRUE)
  if (ENABLE_OPENSSL_SUPPORT)
@@ -82,10 +82,10 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (OPENSSL_INCLUDES_FOLDER AND OPENSSL_LIBRARY_PATH AND OPENSSL_CRYPTO_LIBRARY_PATH) 
          message(STATUS "We found OpenSSL library: ${OPENSSL_LIBRARY_PATH} ${OPENSSL_CRYPTO_LIBRARY_PATH}")
-@@ -477,8 +477,8 @@
- SET(CAPNP_SUPPORT TRUE)
+@@ -487,8 +487,8 @@
+ if (ENABLE_CAPNP_SUPPORT)
+     add_definitions(-DENABLE_CAPNP)
  
- if (CAPNP_SUPPORT)
 -    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 -    find_library(CAPNP_KJ_LIBRARY_PATH NAMES kj PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib")
@@ -93,8 +93,8 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
      if (CAPNP_LIBRARY_PATH AND CAPNP_KJ_LIBRARY_PATH)
          message(STATUS "We found capnp and kj libraries: ${CAPNP_LIBRARY_PATH} ${CAPNP_KJ_LIBRARY_PATH}")
-@@ -495,12 +495,12 @@
- target_link_libraries(fast_library simple_packet_capnp)
+@@ -507,12 +507,12 @@
+ 
  
  ### Find mongo-c
 -find_path(MONGOC_INCLUDES_FOLDER NAMES libmongoc-1.0/mongoc.h PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
@@ -110,7 +110,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
  if (MONGOC_INCLUDES_FOLDER AND MONGOC_LIBRARY_PATH AND BSON_INCLUDES_FOLDER AND BSON_LIBRARY_PATH)
      message(STATUS "We found mongo-c library ${MONGOC_INCLUDES_FOLDER} ${MONGOC_LIBRARY_PATH} ${BSON_INCLUDES_FOLDER} ${BSON_LIBRARY_PATH}")
-@@ -518,9 +518,9 @@
+@@ -530,9 +530,9 @@
  
  ### Look for libpcap
  
@@ -122,7 +122,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
  #if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH) 
  #    message(STATUS "We found pcap library ${LIBPCAP_LIBRARY_PATH}")
-@@ -533,10 +533,10 @@
+@@ -545,10 +545,10 @@
  ### Look for log4cpp
  
  # Try to find log4cpp includes path
@@ -135,7 +135,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
  
  if (LOG4CPP_INCLUDES_FOLDER AND LOG4CPP_LIBRARY_PATH)
      include_directories(${LOG4CPP_INCLUDES_FOLDER})
-@@ -547,8 +547,8 @@
+@@ -559,8 +559,8 @@
  
  ### Look for jsonc
  
