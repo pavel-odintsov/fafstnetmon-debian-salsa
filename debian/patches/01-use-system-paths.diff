@@ -3,7 +3,7 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
 +++ fastnetmon-1.2.0+git20220420/src/CMakeLists.txt	2022-04-20 09:47:54.502114466 +0200
 @@ -68,9 +68,9 @@
      set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_RPATH};${FASTNETMON_LIBRARIES_GLOBAL_PATH}/boost_1_74_0/stage/lib;${ICU_CUSTOM_INSTALL_PATH}/lib;${FASTNETMON_LIBRARIES_GLOBAL_PATH}/gcc930/lib64")
- 
+
      # For custom Boost we need to build libicu library
 -    find_library(ICU_LIBRARY_UC_PATH NAMES icuuc PATHS "${ICU_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 -    find_library(ICU_LIBRARY_DATA_PATH NAMES icudata PATHS "${ICU_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
@@ -11,48 +11,57 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
 +    find_library(ICU_LIBRARY_UC_PATH NAMES icuuc PATHS "${ICU_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(ICU_LIBRARY_DATA_PATH NAMES icudata PATHS "${ICU_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(ICU_LIBRARY_I18N_PATH NAMES icui18n PATHS "${ICU_CUSTOM_INSTALL_PATH}/lib")
- 
+
      if (ICU_LIBRARY_UC_PATH AND ICU_LIBRARY_DATA_PATH AND ICU_LIBRARY_I18N_PATH)
          message(STATUS "Found libicu")
-@@ -261,10 +261,10 @@
+@@ -269,10 +269,10 @@
      add_definitions(-DENABLE_GOBGP)
      add_library(gobgp_action STATIC actions/gobgp_action.cpp)
- 
+
 -    find_path(GRPC_INCLUDES_FOLDER NAMES grpc/grpc.h PATHS "${GRPC_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 -    find_library(GRPC_LIBRARY_GRPC_PATH NAMES grpc PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 -    find_library(GRPC_LIBRARY_GPR_PATH NAMES gpr PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
--    find_library(GRPC_LIBRARY_GRPC_CPP_PATH NAMES grpc++ PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH) 
+-    find_library(GRPC_LIBRARY_GRPC_CPP_PATH NAMES grpc++ PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +    find_path(GRPC_INCLUDES_FOLDER NAMES grpc/grpc.h PATHS "${GRPC_CUSTOM_INSTALL_PATH}/include")
 +    find_library(GRPC_LIBRARY_GRPC_PATH NAMES grpc PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(GRPC_LIBRARY_GPR_PATH NAMES gpr PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(GRPC_LIBRARY_GRPC_CPP_PATH NAMES grpc++ PATHS "${GRPC_CUSTOM_INSTALL_PATH}/lib")
- 
+
      if (GRPC_INCLUDES_FOLDER AND GRPC_LIBRARY_GRPC_PATH AND GRPC_LIBRARY_GPR_PATH AND GRPC_LIBRARY_GRPC_CPP_PATH)
          include_directories(${GRPC_INCLUDES_FOLDER})
-@@ -293,7 +293,7 @@
+@@ -301,7 +301,7 @@
      # message(STATUS "grpc: ${GRPC_INCLUDES_FOLDER} ${GRPC_LIBRARY_GRPC_PATH} ${GRPC_LIBRARY_GPR_PATH}")
      # message(STATUS ${PROJECT_BINARY_DIR})
- 
+
 -    find_program(PROTOC_BINARY protoc PATHS "${PROTOCOL_BUFFERS_CUSTOM_INSTALL_PATH}/bin" NO_DEFAULT_PATH)
 +    find_program(PROTOC_BINARY protoc PATHS "${PROTOCOL_BUFFERS_CUSTOM_INSTALL_PATH}/bin")
- 
+
      if (PROTOC_BINARY)
          message(STATUS "Found protoc protobuf compiler: ${PROTOC_BINARY}")
-@@ -420,10 +420,10 @@
+@@ -310,7 +310,7 @@
+     endif()
+
+     # Search for gRPC plugin for protobuf, it's just binary
+-    find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin PATHS "${GRPC_CUSTOM_INSTALL_PATH}/bin" NO_DEFAULT_PATH)
++    find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin PATHS "${GRPC_CUSTOM_INSTALL_PATH}/bin")
+
+     if (GRPC_CPP_PLUGIN)
+         message(STATUS "Found Protobuf gRPC compiler plugin: ${GRPC_CPP_PLUGIN}")
+@@ -435,10 +435,10 @@
  ### Move this code to cmake module
- 
+
  # Try to find hiredis in a specific folder
 -find_path(HIREDIS_INCLUDES_FOLDER NAMES hiredis/hiredis.h PATHS "${HIREDIS_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 +find_path(HIREDIS_INCLUDES_FOLDER NAMES hiredis/hiredis.h PATHS "${HIREDIS_CUSTOM_INSTALL_PATH}/include")
- 
+
  # Try to find hiredis library path
 -find_library(HIREDIS_LIBRARY_PATH NAMES hiredis PATHS "${HIREDIS_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +find_library(HIREDIS_LIBRARY_PATH NAMES hiredis PATHS "${HIREDIS_CUSTOM_INSTALL_PATH}/lib")
- 
- if (HIREDIS_INCLUDES_FOLDER AND HIREDIS_LIBRARY_PATH) 
+
+ if (HIREDIS_INCLUDES_FOLDER AND HIREDIS_LIBRARY_PATH)
      message(STATUS "We found hiredis library ${HIREDIS_INCLUDES_FOLDER} ${HIREDIS_LIBRARY_PATH}")
-@@ -438,9 +438,9 @@
- 
+@@ -453,9 +453,9 @@
+
  set(ENABLE_OPENSSL_SUPPORT TRUE)
  if (ENABLE_OPENSSL_SUPPORT)
 -    find_path(OPENSSL_INCLUDES_FOLDER NAMES "openssl/rsa.h" PATHS "${OPENSSL_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
@@ -61,74 +70,70 @@ diff -Naur fastnetmon-1.2.0+git20220420.orig/src/CMakeLists.txt fastnetmon-1.2.0
 +    find_path(OPENSSL_INCLUDES_FOLDER NAMES "openssl/rsa.h" PATHS "${OPENSSL_CUSTOM_INSTALL_PATH}/include")
 +    find_library(OPENSSL_LIBRARY_PATH NAMES ssl PATHS "${OPENSSL_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(OPENSSL_CRYPTO_LIBRARY_PATH NAMES crypto PATHS "${OPENSSL_CUSTOM_INSTALL_PATH}/lib")
- 
-     if (OPENSSL_INCLUDES_FOLDER AND OPENSSL_LIBRARY_PATH AND OPENSSL_CRYPTO_LIBRARY_PATH) 
+
+     if (OPENSSL_INCLUDES_FOLDER AND OPENSSL_LIBRARY_PATH AND OPENSSL_CRYPTO_LIBRARY_PATH)
          message(STATUS "We found OpenSSL library: ${OPENSSL_LIBRARY_PATH} ${OPENSSL_CRYPTO_LIBRARY_PATH}")
-@@ -450,11 +450,11 @@
-     endif()
- endif()
- 
--SET(CAPNP_SUPPORT TRUE)
-+SET(CAPNP_SUPPORT FALSE)
- 
+@@ -468,8 +468,8 @@
+ SET(CAPNP_SUPPORT TRUE)
+
  if (CAPNP_SUPPORT)
 -    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 -    find_library(CAPNP_KJ_LIBRARY_PATH NAMES kj PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +    find_library(CAPNP_LIBRARY_PATH NAMES capnp PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib")
 +    find_library(CAPNP_KJ_LIBRARY_PATH NAMES kj PATHS "${CAPNP_CUSTOM_INSTALL_PATH}/lib")
- 
+
      if (CAPNP_LIBRARY_PATH AND CAPNP_KJ_LIBRARY_PATH)
          message(STATUS "We found capnp and kj libraries: ${CAPNP_LIBRARY_PATH} ${CAPNP_KJ_LIBRARY_PATH}")
-@@ -471,12 +471,12 @@
+@@ -486,12 +486,12 @@
  target_link_libraries(fast_library simple_packet_capnp)
- 
+
  ### Find mongo-c
 -find_path(MONGOC_INCLUDES_FOLDER NAMES libmongoc-1.0/mongoc.h PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 -find_library(MONGOC_LIBRARY_PATH NAMES mongoc-1.0 PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +find_path(MONGOC_INCLUDES_FOLDER NAMES libmongoc-1.0/mongoc.h PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/include")
 +find_library(MONGOC_LIBRARY_PATH NAMES mongoc-1.0 PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/lib")
- 
+
  ### find bson
 -find_path(BSON_INCLUDES_FOLDER NAMES libbson-1.0/bson.h PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 -find_library(BSON_LIBRARY_PATH NAMES bson-1.0 PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +find_path(BSON_INCLUDES_FOLDER NAMES libbson-1.0/bson.h PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/include")
 +find_library(BSON_LIBRARY_PATH NAMES bson-1.0 PATHS "${MONGO_C_CUSTOM_INSTALL_PATH}/lib")
- 
+
  if (MONGOC_INCLUDES_FOLDER AND MONGOC_LIBRARY_PATH AND BSON_INCLUDES_FOLDER AND BSON_LIBRARY_PATH)
      message(STATUS "We found mongo-c library ${MONGOC_INCLUDES_FOLDER} ${MONGOC_LIBRARY_PATH} ${BSON_INCLUDES_FOLDER} ${BSON_LIBRARY_PATH}")
-@@ -494,9 +494,9 @@
- 
+@@ -509,9 +509,9 @@
+
  ### Look for libpcap
- 
+
 -#find_path(LIBPCAP_INCLUDES_FOLDER NAMES pcap.h PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
-+#find_path(LIBPCAP_INCLUDES_FOLDER NAMES pcap.h PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/include" )
- 
++#find_path(LIBPCAP_INCLUDES_FOLDER NAMES pcap.h PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/include")
+
 -#find_library(LIBPCAP_LIBRARY_PATH NAMES pcap PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
-+#find_library(LIBPCAP_LIBRARY_PATH NAMES pcap PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/lib" )
- 
- #if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH) 
++#find_library(LIBPCAP_LIBRARY_PATH NAMES pcap PATHS "${LIBPCAP_CUSTOM_INSTALL_PATH}/lib")
+
+ #if (LIBPCAP_INCLUDES_FOLDER AND LIBPCAP_LIBRARY_PATH)
  #    message(STATUS "We found pcap library ${LIBPCAP_LIBRARY_PATH}")
-@@ -509,10 +509,10 @@
+@@ -524,10 +524,10 @@
  ### Look for log4cpp
- 
+
  # Try to find log4cpp includes path
 -find_path(LOG4CPP_INCLUDES_FOLDER NAMES log4cpp/Appender.hh PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 +find_path(LOG4CPP_INCLUDES_FOLDER NAMES log4cpp/Appender.hh PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/include")
- 
+
  # Try to find log4cpp library path
 -find_library(LOG4CPP_LIBRARY_PATH NAMES log4cpp PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +find_library(LOG4CPP_LIBRARY_PATH NAMES log4cpp PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/lib")
- 
+
  if (LOG4CPP_INCLUDES_FOLDER AND LOG4CPP_LIBRARY_PATH)
      include_directories(${LOG4CPP_INCLUDES_FOLDER})
-@@ -523,8 +523,8 @@
- 
+@@ -538,8 +538,8 @@
+
  ### Look for jsonc
- 
+
 -find_path(JSONC_INCLUDES_FOLDER NAMES json-c/json.h PATHS "${JSONC_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
 -find_library(JSONC_LIBRARY_PATH NAMES json-c PATHS "${JSONC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
 +find_path(JSONC_INCLUDES_FOLDER NAMES json-c/json.h PATHS "${JSONC_CUSTOM_INSTALL_PATH}/include")
 +find_library(JSONC_LIBRARY_PATH NAMES json-c PATHS "${JSONC_CUSTOM_INSTALL_PATH}/lib")
- 
+
  if (JSONC_INCLUDES_FOLDER AND JSONC_LIBRARY_PATH)
-     include_directories(${JSONC_INCLUDES_FOLDER}) 
+     include_directories(${JSONC_INCLUDES_FOLDER})
